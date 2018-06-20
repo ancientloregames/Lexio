@@ -40,6 +40,12 @@ dependencies {
     implementation "com.android.support:design:$SUPPORT_VERSION"
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
 
+    implementation "android.arch.persistence.room:runtime:$ROOM_VERSION"
+    implementation "android.arch.persistence.room:rxjava2:$ROOM_VERSION"
+    kapt "android.arch.persistence.room:compiler:$ROOM_VERSION"
+
+    testImplementation "android.arch.persistence.room:testing:$ROOM_VERSION"
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'

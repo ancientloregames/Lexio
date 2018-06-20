@@ -4,6 +4,7 @@ buildscript {
     ext.KOTLIN_VERSION = '1.2.41'
     ext.SUPPORT_VERSION = '27.1.1'
     ext.DATABINDING_VERSION = '3.1.2'
+    ext.ROOM_VERSION = '1.1.1'
     repositories {
         google()
         jcenter()
