@@ -31,7 +31,10 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$KOTLIN_VERSION"
 
-    implementation 'com.android.support:appcompat-v7:27.1.1'
+
+    implementation "com.android.support:appcompat-v7:$SUPPORT_VERSION"
+    implementation "com.android.support:recyclerview-v7:$SUPPORT_VERSION"
+    implementation "com.android.support:design:$SUPPORT_VERSION"
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
 
     testImplementation 'junit:junit:4.12'
