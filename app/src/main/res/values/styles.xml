@@ -8,4 +8,13 @@
 		<item name="colorAccent">@color/colorAccent</item>
 	</style>
 
+	<style name="BaseTheme.NoActionBar" parent="Base.Theme.AppCompat.Light.DarkActionBar">
+		<item name="windowActionBar">false</item>
+		<item name="windowNoTitle">true</item>
+	</style>
+
+	<style name="AppTheme.AppBarOverlay" parent="Base.ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+	<style name="AppTheme.PopupOverlay" parent="Base.ThemeOverlay.AppCompat.Light"/>
+
 </resources>
