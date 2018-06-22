@@ -1,13 +1,16 @@
 package com.ancientlore.lexio
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import com.ancientlore.lexio.databinding.ActivityMainBinding
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
+	companion object {
+		const val INTENT_NEW_WORD = 101
+	}
 
 	private val dbExec: ExecutorService = Executors.newSingleThreadExecutor()
 
@@ -28,4 +31,10 @@ class MainActivity : AppCompatActivity() {
 			listView.adapter = listAdapter
 		}
 	}
+
+	override fun getLayoutId() = R.layout.activity_main
+
+	override fun getBindingVariable() = BR.viewModel
+
+	override fun createViewModel() = MainViewModel()
 }

@@ -5,6 +5,9 @@
 		xmlns:bind="http://schemas.android.com/tools"
 	>
 	<data>
+		<variable
+			name="viewModel"
+			type="com.ancientlore.lexio.MainViewModel" />
 	</data>
 
 	<android.support.constraint.ConstraintLayout
