@@ -1,8 +1,10 @@
 package com.ancientlore.lexio
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.View
 import com.ancientlore.lexio.databinding.ActivityMainBinding
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -37,4 +39,9 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 	override fun getBindingVariable() = BR.viewModel
 
 	override fun createViewModel() = MainViewModel()
+
+	fun addNewWord(view: View) {
+		val intent = Intent(this, NewWordActivity::class.java)
+		startActivityForResult(intent, INTENT_NEW_WORD)
+	}
 }
