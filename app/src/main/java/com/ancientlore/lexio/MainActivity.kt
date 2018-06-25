@@ -14,13 +14,12 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 		const val INTENT_NEW_WORD = 101
 	}
 
-	private val dbExec: ExecutorService = Executors.newSingleThreadExecutor()
+	private val dbExec: ExecutorService = Executors.newSingleThreadExecutor { r -> Thread(r, "db_worker") }
 
 	private lateinit var listAdapter: WordsListAdapter
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
-		setContentView(R.layout.activity_main)
 
 		val listView: RecyclerView = findViewById(R.id.listView)
 
