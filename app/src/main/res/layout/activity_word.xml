@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:app="http://schemas.android.com/apk/res-auto"
+		xmlns:bind="http://schemas.android.com/tools"
+	>
+	<data>
+		<variable name="wordModel" type="com.ancientlore.lexio.WordViewModel"/>
+
+		<import type="android.view.View"/>
+	</data>
+
+	<android.support.constraint.ConstraintLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		>
+		<include
+			layout="@layout/toolbar"
+			android:id="@+id/include"
+			/>
+
+		<android.support.design.widget.TextInputLayout
+			android:id="@+id/wordWrapper"
+			android:layout_width="0dp"
+			android:layout_height="57dp"
+			android:layout_marginEnd="8dp"
+			android:layout_marginRight="8dp"
+			android:layout_marginLeft="8dp"
+			android:layout_marginStart="8dp"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintHorizontal_bias="0.5"
+			app:layout_constraintTop_toBottomOf="@+id/include"
+			app:layout_constraintBottom_toTopOf="@+id/translationWrapper"
+			app:layout_constraintVertical_chainStyle="packed"
+			app:layout_constraintVertical_bias="0.0"
+			android:layout_marginTop="8dp"
+			>
+			<android.support.v7.widget.AppCompatEditText
+				android:id="@+id/word"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:inputType="textCapWords"
+				android:singleLine="true"
+				android:maxLines="1"
+				android:hint="@string/word"
+				/>
+		</android.support.design.widget.TextInputLayout>
+
+		<android.support.design.widget.TextInputLayout
+			android:id="@+id/translationWrapper"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_marginEnd="8dp"
+			android:layout_marginRight="8dp"
+			android:layout_marginLeft="8dp"
+			android:layout_marginStart="8dp"
+			android:layout_marginTop="8dp"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toBottomOf="@+id/wordWrapper"
+			app:layout_constraintBottom_toTopOf="@+id/transcriptionWrapper"
+			app:layout_constraintHorizontal_bias="0.5"
+			>
+			<android.support.v7.widget.AppCompatEditText
+				android:id="@+id/translation"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:inputType="textCapWords"
+				android:singleLine="true"
+				android:maxLines="1"
+				android:hint="@string/translation"
+				/>
+		</android.support.design.widget.TextInputLayout>
+
+		<android.support.design.widget.TextInputLayout
+			android:id="@+id/transcriptionWrapper"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_marginEnd="8dp"
+			android:layout_marginRight="8dp"
+			android:layout_marginLeft="8dp"
+			android:layout_marginStart="8dp"
+			android:layout_marginTop="8dp"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toBottomOf="@+id/translationWrapper"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintHorizontal_bias="0.5"
+			>
+			<android.support.v7.widget.AppCompatEditText
+				android:id="@+id/transcription"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:inputType="textCapWords"
+				android:singleLine="true"
+				android:maxLines="1"
+				android:hint="@string/transcription"
+				/>
+		</android.support.design.widget.TextInputLayout>
+
+		<android.support.v7.widget.AppCompatButton
+			android:text="@string/submit"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:id="@+id/submitButton"
+			app:layout_constraintStart_toStartOf="parent"
+			android:layout_marginLeft="8dp"
+			android:layout_marginStart="8dp"
+			app:layout_constraintEnd_toEndOf="parent"
+			android:layout_marginEnd="8dp"
+			android:layout_marginRight="8dp"
+			app:layout_constraintBottom_toBottomOf="parent"
+			android:layout_marginBottom="8dp"
+			android:layout_marginTop="8dp"
+			app:layout_constraintTop_toBottomOf="@+id/translationWrapper"
+			app:layout_constraintVertical_bias="0.95"
+			/>
+
+	</android.support.constraint.ConstraintLayout>
+</layout>

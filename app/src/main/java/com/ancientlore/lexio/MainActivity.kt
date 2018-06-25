@@ -40,7 +40,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>() {
 	override fun createViewModel() = MainViewModel()
 
 	fun addNewWord(view: View) {
-		val intent = Intent(this, NewWordActivity::class.java)
+		val intent = Intent(this, WordActivity::class.java)
 		startActivityForResult(intent, INTENT_NEW_WORD)
 	}
 }

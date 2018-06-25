@@ -1,3 +1,11 @@
 <resources>
 	<string name="app_name">Lexio</string>
+
+	<string name="new_word">New Word</string>
+
+	<string name="word">Word</string>
+	<string name="translation">Translation</string>
+	<string name="transcription">Transcription</string>
+
+	<string name="submit">Submit</string>
 </resources>
