@@ -39,7 +39,7 @@
 			android:layout_marginRight="16dp"
 			android:tint="@android:color/white"
 			app:srcCompat="@drawable/plus"
-			android:onClick="addNewWord"
+			android:onClick="onAddWord"
 			/>
 	</android.support.constraint.ConstraintLayout>
 </layout>
