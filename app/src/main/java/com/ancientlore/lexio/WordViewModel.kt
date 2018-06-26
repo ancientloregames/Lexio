@@ -2,23 +2,52 @@ package com.ancientlore.lexio
 
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
+import android.text.Editable
+import java.util.concurrent.Executors
+import java.util.concurrent.ScheduledFuture
+import java.util.concurrent.TimeUnit
 
-class WordViewModel : ViewModel {
+class WordViewModel : ViewModel() {
 
-	val name : ObservableField<String>
+	val name : ObservableField<String> = ObservableField("")
 
-	val translation : ObservableField<String>
+	val translation : ObservableField<String> = ObservableField("")
 
-	val transcription : ObservableField<String>
+	val transcription : ObservableField<String> = ObservableField("")
+
+	val typeWordWatcher = object : SimpleTextWatcher() {
+
+		private var execService = Executors.newSingleThreadScheduledExecutor { r -> Thread(r, "translate-worker") }
+		private var execTask: ScheduledFuture<*>? = null
+
+		override fun afterTextChanged(s: Editable) {
+			execTask?.cancel(true)
+			if (s.length > 2) {
+				execTask = execService.schedule( {
+					Utils.getTranslation(s.toString(), setTranslation, printError)
+				}, 200, TimeUnit.MILLISECONDS)
+			}
+		}
+
+		private val setTranslation = object : Runnable1<String> {
+			override fun run(translation: String) {
+				setTranslation(translation)
+			}
+		}
+
+		private val printError = object : Runnable1<Throwable> {
+			override fun run(throwable: Throwable) {
+				throwable.printStackTrace()
+			}
+		}
+	}
+
+	fun setTranslation(translation: String) {
+		this.translation.set(translation)
+	}
 
 	internal fun getWord() =
-		 Word(name = name.get().toString(),
-				translation = translation.get().toString(),
-				transcription = transcription.get().toString())
-
-	constructor() : super() {
-		this.name = ObservableField("")
-		this.translation = ObservableField("")
-		this.transcription = ObservableField("")
-	}
+			Word(name = name.get().toString(),
+					translation = translation.get().toString(),
+					transcription = transcription.get().toString())
 }
