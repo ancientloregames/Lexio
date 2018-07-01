@@ -6,14 +6,15 @@ import android.os.Bundle
 import android.support.annotation.WorkerThread
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.support.v7.widget.SearchView
+import android.view.Menu
 import android.view.View
 import com.ancientlore.lexio.WordActivity.Companion.EXTRA_WORD
 import com.ancientlore.lexio.databinding.ActivityMainBinding
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), WordsListAdapter.Listener {
-
+class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), WordsListAdapter.Listener, SearchView.OnQueryTextListener {
 	companion object {
 		const val INTENT_ADD_WORD = 101
 		const val INTENT_UPDATE_WORD = 102
@@ -22,6 +23,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), WordsLi
 	private val dbExec: ExecutorService = Executors.newSingleThreadExecutor { r -> Thread(r, "db_worker") }
 
 	private lateinit var listAdapter: WordsListAdapter
+
+	private lateinit var searchView: SearchView
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
@@ -37,6 +40,25 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), WordsLi
 			listAdapter.listener = this
 			listView.adapter = listAdapter
 		}
+	}
+
+	override fun onCreateOptionsMenu(menu: Menu): Boolean {
+		menuInflater.inflate(R.menu.menu_main, menu)
+
+		val searchItem = menu.findItem(R.id.miSearch)
+		searchView = searchItem.actionView as SearchView
+		searchView.setOnQueryTextListener(this)
+		return true
+	}
+
+	override fun onQueryTextSubmit(query: String): Boolean {
+		listAdapter.filter(query)
+		return false
+	}
+
+	override fun onQueryTextChange(newText: String): Boolean {
+		listAdapter.filter(newText)
+		return false
 	}
 
 	override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -57,6 +79,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), WordsLi
 	override fun getBindingVariable() = BR.viewModel
 
 	override fun createViewModel() = MainViewModel()
+
+	override fun getTitleId() = R.string.my_words
 
 	private fun addWord(word: Word) {
 		dbExec.submit { addWordToDb(word) }

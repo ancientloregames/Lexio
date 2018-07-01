@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
 import android.os.Bundle
 import android.support.annotation.LayoutRes
+import android.support.annotation.StringRes
 import android.support.v7.app.AppCompatActivity
 
 abstract class BaseActivity<T : ViewDataBinding, V : ViewModel> : AppCompatActivity() {
@@ -13,9 +14,11 @@ abstract class BaseActivity<T : ViewDataBinding, V : ViewModel> : AppCompatActiv
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
-		setSupportActionBar(findViewById(R.id.toolbar))
-
 		viewDataBinding = DataBindingUtil.setContentView(this, getLayoutId())
+
+		setSupportActionBar(findViewById(R.id.toolbar))
+		supportActionBar?.title = getString(getTitleId())
+
 		viewDataBinding.setLifecycleOwner(this)
 		viewModel = createViewModel()
 		viewDataBinding.setVariable(getBindingVariable(), viewModel)
@@ -28,4 +31,7 @@ abstract class BaseActivity<T : ViewDataBinding, V : ViewModel> : AppCompatActiv
 	abstract fun getBindingVariable() : Int
 
 	abstract fun createViewModel() : V
+
+	@StringRes
+	abstract fun getTitleId() : Int
 }

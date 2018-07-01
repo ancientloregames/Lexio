@@ -1,7 +1,10 @@
 <resources>
 	<string name="app_name">Lexio</string>
 
+	<string name="my_words">My Words</string>
 	<string name="new_word">New Word</string>
+	
+	<string name="search">Search</string>
 
 	<string name="word">Word</string>
 	<string name="translation">Translation</string>
