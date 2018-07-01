@@ -7,13 +7,26 @@ import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
 
-class WordViewModel : ViewModel() {
+class WordViewModel : ViewModel {
+
+	val id: Long
 
 	val name : ObservableField<String> = ObservableField("")
 
 	val translation : ObservableField<String> = ObservableField("")
 
 	val transcription : ObservableField<String> = ObservableField("")
+
+	constructor() {
+		id = 0
+	}
+
+	constructor(word: Word) {
+		id = word.id
+		name.set(word.name)
+		translation.set(word.translation)
+		transcription.set(word.transcription)
+	}
 
 	val typeWordWatcher = object : SimpleTextWatcher() {
 
@@ -46,8 +59,5 @@ class WordViewModel : ViewModel() {
 		this.translation.set(translation)
 	}
 
-	internal fun getWord() =
-			Word(name = name.get().toString(),
-					translation = translation.get().toString(),
-					transcription = transcription.get().toString())
+	internal fun getWord() = Word(id, name.get().toString(), translation.get().toString(), transcription.get().toString())
 }

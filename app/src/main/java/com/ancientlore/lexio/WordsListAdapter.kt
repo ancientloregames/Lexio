@@ -8,11 +8,23 @@ import android.view.ViewGroup
 import android.widget.TextView
 
 class WordsListAdapter(private val items : MutableList<Word>) : RecyclerView.Adapter<WordsListAdapter.ViewHolder>() {
+	interface Listener {
+		fun onWordSelected(word: Word)
+	}
+	var listener: Listener? = null
 
 	@UiThread
 	fun addItem(newWord: Word) {
 		items.add(newWord)
 		notifyItemInserted(itemCount - 1)
+	}
+
+	@UiThread
+	fun updateItem(word: Word) {
+		items.indexOfFirst { it.id == word.id }.takeIf { it != -1 }?.let { index ->
+			items[index] = word
+			notifyItemChanged(index)
+		}
 	}
 
 	override fun getItemCount(): Int {
@@ -24,7 +36,11 @@ class WordsListAdapter(private val items : MutableList<Word>) : RecyclerView.Ada
 	}
 
 	override fun onBindViewHolder(holder: ViewHolder, index: Int) {
-		holder.bind(items[index])
+		val word = items[index]
+		holder.bind(word)
+		holder.setClickListener(Runnable {
+			listener?.onWordSelected(word)
+		})
 	}
 
 	class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -35,6 +51,10 @@ class WordsListAdapter(private val items : MutableList<Word>) : RecyclerView.Ada
 		fun bind(data: Word) {
 			titleView.text = data.name
 			subtitleView.text = data.translation
+		}
+
+		fun setClickListener(action: Runnable) {
+			itemView.setOnClickListener { action.run() }
 		}
 	}
 }

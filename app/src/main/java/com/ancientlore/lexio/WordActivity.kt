@@ -15,7 +15,7 @@ class WordActivity : BaseActivity<ActivityWordBinding, WordViewModel>() {
 
 	override fun getBindingVariable() = BR.wordModel
 
-	override fun createViewModel() = WordViewModel()
+	override fun createViewModel() = intent.getParcelableExtra<Word>(EXTRA_WORD)?.let { WordViewModel(it) } ?: WordViewModel()
 
 	fun onSubmitWord(view: View) {
 		val activityResult = Intent()
