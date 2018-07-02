@@ -22,8 +22,8 @@ class WordsListAdapter(items: MutableList<Word>) : RecyclerView.Adapter<WordsLis
 
 	@UiThread
 	fun addItem(newWord: Word) {
+		filter.filter("")
 		originalItems.add(newWord)
-		filteredItems.add(newWord)
 		notifyItemInserted(itemCount - 1)
 	}
 
