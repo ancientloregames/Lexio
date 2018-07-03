@@ -7,6 +7,7 @@
 		<variable name="wordModel" type="com.ancientlore.lexio.WordViewModel"/>
 
 		<import type="android.view.View"/>
+		<import type="android.text.InputType"/>
 	</data>
 
 	<android.support.constraint.ConstraintLayout
@@ -44,6 +45,7 @@
 				android:hint="@string/word"
 				android:text="@={wordModel.name}"
 				android:addTextChangedListener="@{wordModel.typeWordWatcher}"
+				android:inputType="@{wordModel.editable ? InputType.TYPE_CLASS_TEXT : InputType.TYPE_NULL}"
 				/>
 		</android.support.design.widget.TextInputLayout>
 
@@ -70,6 +72,7 @@
 				android:maxLines="1"
 				android:hint="@string/translation"
 				android:text="@={wordModel.translation}"
+				android:inputType="@{wordModel.editable ? InputType.TYPE_CLASS_TEXT : InputType.TYPE_NULL}"
 				/>
 		</android.support.design.widget.TextInputLayout>
 
@@ -96,6 +99,7 @@
 				android:maxLines="1"
 				android:hint="@string/transcription"
 				android:text="@={wordModel.transcription}"
+				android:inputType="@{wordModel.editable ? InputType.TYPE_CLASS_TEXT : InputType.TYPE_NULL}"
 				/>
 		</android.support.design.widget.TextInputLayout>
 

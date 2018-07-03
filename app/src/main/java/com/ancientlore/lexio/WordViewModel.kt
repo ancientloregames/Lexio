@@ -1,6 +1,7 @@
 package com.ancientlore.lexio
 
 import android.arch.lifecycle.ViewModel
+import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
 import android.text.Editable
 import java.util.concurrent.Executors
@@ -17,6 +18,8 @@ class WordViewModel : ViewModel {
 
 	val transcription : ObservableField<String> = ObservableField("")
 
+	val editable : ObservableBoolean = ObservableBoolean(true)
+
 	constructor() {
 		id = 0
 	}
@@ -26,6 +29,7 @@ class WordViewModel : ViewModel {
 		name.set(word.name)
 		translation.set(word.translation)
 		transcription.set(word.transcription)
+		editable.set(false)
 	}
 
 	val typeWordWatcher = object : SimpleTextWatcher() {

@@ -2,7 +2,6 @@ package com.ancientlore.lexio
 
 import android.app.Activity
 import android.content.Intent
-import android.text.InputType
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -30,18 +29,8 @@ class WordActivity : BaseActivity<ActivityWordBinding, WordViewModel>() {
 	private fun switchEditMode(editable: Boolean) {
 		this.editable = editable
 
-		if (editable) {
-			word.inputType = InputType.TYPE_CLASS_TEXT
-			translation.inputType = InputType.TYPE_CLASS_TEXT
-			transcription.inputType = InputType.TYPE_CLASS_TEXT
-			showKeyboard(word)
-		}
-		else {
-			hideKeyboard()
-			word.inputType = InputType.TYPE_NULL
-			translation.inputType = InputType.TYPE_NULL
-			transcription.inputType = InputType.TYPE_NULL
-		}
+		if (editable) showKeyboard(word)
+		else hideKeyboard()
 	}
 
 	private fun showKeyboard(targetView: View) {
