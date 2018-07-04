@@ -16,33 +16,12 @@ class WordActivity : BaseActivity<ActivityWordBinding, WordViewModel>() {
 		const val EXTRA_WORD = "word"
 	}
 
-	private var editable: Boolean = true
-
 	override fun onResume() {
 		super.onResume()
 
 		val editable = !intent.hasExtra(EXTRA_WORD)
 
-		switchEditMode(editable)
-	}
-
-	private fun switchEditMode(editable: Boolean) {
-		this.editable = editable
-
-		if (editable) showKeyboard(word)
-		else hideKeyboard()
-	}
-
-	private fun showKeyboard(targetView: View) {
-		val imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-		imm.showSoftInput(targetView, SHOW_IMPLICIT)
-	}
-
-	private fun hideKeyboard() {
-		currentFocus?.let {
-			val imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-			imm.hideSoftInputFromWindow(it.windowToken, 0)
-		}
+		switchKeyboard(editable)
 	}
 
 	override fun getLayoutId() = R.layout.activity_word
@@ -60,7 +39,7 @@ class WordActivity : BaseActivity<ActivityWordBinding, WordViewModel>() {
 
 	override fun onOptionsItemSelected(item: MenuItem): Boolean {
 		when (item.itemId) {
-			R.id.miEdit -> switchEditMode(!editable)
+			R.id.miEdit -> switchEditMode()
 		}
 		return true
 	}
@@ -70,5 +49,28 @@ class WordActivity : BaseActivity<ActivityWordBinding, WordViewModel>() {
 		activityResult.putExtra(EXTRA_WORD, viewModel.getWord())
 		setResult(Activity.RESULT_OK, activityResult)
 		finish()
+	}
+
+	private fun switchEditMode() {
+		val editable = viewModel.switchEditMode()
+		switchKeyboard(editable)
+	}
+
+	private fun switchKeyboard(show: Boolean) {
+		if (show) showKeyboard(word)
+		else hideKeyboard()
+	}
+
+	private fun showKeyboard(targetView: View) {
+		targetView.requestFocus()
+		val imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+		imm.showSoftInput(targetView, SHOW_IMPLICIT)
+	}
+
+	private fun hideKeyboard() {
+		currentFocus?.let {
+			val imm = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+			imm.hideSoftInputFromWindow(it.windowToken, 0)
+		}
 	}
 }

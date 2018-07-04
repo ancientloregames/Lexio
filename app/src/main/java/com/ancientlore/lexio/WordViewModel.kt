@@ -63,5 +63,11 @@ class WordViewModel : ViewModel {
 		this.translation.set(translation)
 	}
 
+	fun switchEditMode(): Boolean {
+		val wasEditable = editable.get()
+		editable.set(!wasEditable)
+		return !wasEditable
+	}
+
 	internal fun getWord() = Word(id, name.get().toString(), translation.get().toString(), transcription.get().toString())
 }
