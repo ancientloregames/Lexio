@@ -33,7 +33,9 @@ class WordActivity : BaseActivity<ActivityWordBinding, WordViewModel>() {
 	override fun getTitleId() = R.string.new_word
 
 	override fun onCreateOptionsMenu(menu: Menu): Boolean {
-		menuInflater.inflate(R.menu.menu_word, menu)
+		if (!viewModel.isEditable()) {
+			menuInflater.inflate(R.menu.menu_word, menu)
+		}
 		return true
 	}
 

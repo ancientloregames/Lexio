@@ -69,5 +69,7 @@ class WordViewModel : ViewModel {
 		return !wasEditable
 	}
 
+	fun isEditable() = editable.get()
+
 	internal fun getWord() = Word(id, name.get().toString(), translation.get().toString(), transcription.get().toString())
 }
