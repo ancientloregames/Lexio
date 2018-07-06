@@ -8,8 +8,11 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import com.ancientlore.lexio.WordActivity.Companion.EXTRA_WORD
+import com.ancientlore.lexio.WordsListAdapter.Companion.SEARCH_TRANSLATION
+import com.ancientlore.lexio.WordsListAdapter.Companion.SEARCH_WORD
 import com.ancientlore.lexio.databinding.ActivityMainBinding
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -48,6 +51,14 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), WordsLi
 		val searchItem = menu.findItem(R.id.miSearch)
 		searchView = searchItem.actionView as SearchView
 		searchView.setOnQueryTextListener(this)
+		return true
+	}
+
+	override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+		when (item?.itemId) {
+			R.id.miOrigSearch -> listAdapter.searchDirection = SEARCH_WORD
+			R.id.miTransSearch -> listAdapter.searchDirection = SEARCH_TRANSLATION
+		}
 		return true
 	}
 

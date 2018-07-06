@@ -7,7 +7,7 @@ import android.arch.persistence.room.PrimaryKey
 import android.os.Parcel
 import android.os.Parcelable
 
-@Entity(tableName = "words", indices = [(Index(value = "name", unique = true))])
+@Entity(tableName = "words", indices = [Index(value = "name", unique = true), Index(value = "translation", unique = false)])
 data class Word(@PrimaryKey(autoGenerate = true) var id: Long = 0,
 				@field:ColumnInfo(name = "name") var name: String = "",
 				@field:ColumnInfo(name = "translation") var translation: String = "",

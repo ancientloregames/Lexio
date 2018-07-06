@@ -8,7 +8,15 @@
 		android:id="@+id/miSearch"
 		android:icon="@drawable/ic_search"
 		android:title="@string/search"
-		app:showAsAction="ifRoom"
+		app:showAsAction="always"
 		app:actionViewClass="android.support.v7.widget.SearchView"
+		/>
+	<item
+		android:id="@+id/miOrigSearch"
+		android:title="@string/search_word"
+		/>
+	<item
+		android:id="@+id/miTransSearch"
+		android:title="@string/search_translation"
 		/>
 </menu>

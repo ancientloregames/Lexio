@@ -10,6 +10,12 @@ import android.widget.Filterable
 import android.widget.TextView
 
 class WordsListAdapter(items: MutableList<Word>) : RecyclerView.Adapter<WordsListAdapter.ViewHolder>(), Filterable {
+
+	companion object {
+		const val SEARCH_WORD = 0
+		const val SEARCH_TRANSLATION = 1
+	}
+
 	interface Listener {
 		fun onWordSelected(word: Word)
 	}
@@ -18,7 +24,10 @@ class WordsListAdapter(items: MutableList<Word>) : RecyclerView.Adapter<WordsLis
 	private val originalItems : MutableList<Word> = items
 	private var filteredItems : MutableList<Word> = items
 
-	private var wordFilter: WordFilter? = null
+	private val wordFilter: WordFilter by lazy { WordFilter() }
+	private val translationFilter: TranslationFilter by lazy { TranslationFilter() }
+
+	var searchDirection: Int = SEARCH_WORD
 
 	@UiThread
 	fun addItem(newWord: Word) {
@@ -56,41 +65,43 @@ class WordsListAdapter(items: MutableList<Word>) : RecyclerView.Adapter<WordsLis
 		filter.filter(constraint)
 	}
 
-	override fun getFilter() = wordFilter ?: WordFilter()
+	override fun getFilter() =
+		when (searchDirection) {
+			SEARCH_WORD -> wordFilter
+			else -> translationFilter
+		}
 
-	inner class WordFilter: Filter() {
+	abstract inner class ListFilter: Filter() {
 		override fun performFiltering(constraint: CharSequence): FilterResults {
+			val resultList =
+					if (constraint.isNotEmpty()) {
+						val candidate = constraint.toString().toLowerCase()
+
+						originalItems.filter { satisfy(it, candidate) }
+					}
+					else originalItems
+
 			val result = FilterResults()
-
-			if (constraint.isNotEmpty())
-			{
-				val text = constraint.toString().toLowerCase()
-
-				val list = originalItems
-
-				val itemsCount = list.count()
-				val resultList = ArrayList<Word>(itemsCount)
-
-				for (i in 0 until itemsCount) {
-					val word = list[i]
-					if (word.name.toLowerCase().startsWith(text)) resultList.add(word)
-				}
-				result.count = resultList.size
-				result.values = resultList
-			}
-			else
-			{
-				result.count = originalItems.size
-				result.values = originalItems
-			}
+			result.count = resultList.size
+			result.values = resultList
 
 			return result
 		}
 
+		abstract fun satisfy(word: Word, candidate: String): Boolean
+
 		override fun publishResults(constraint: CharSequence, results: FilterResults) {
-			filteredItems = results.values as ArrayList<Word>
+			filteredItems = results.values as MutableList<Word>
 			notifyDataSetChanged()
 		}
+	}
+
+	inner class WordFilter: ListFilter() {
+		override fun satisfy(word: Word, candidate: String) = word.name.toLowerCase().startsWith(candidate)
+	}
+
+	inner class TranslationFilter: ListFilter() {
+		override fun satisfy(word: Word, candidate: String) = word.translation.toLowerCase().startsWith(candidate)
 	}
 
 	class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
