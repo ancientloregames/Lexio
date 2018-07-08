@@ -58,6 +58,8 @@ dependencies {
     implementation "android.arch.persistence.room:rxjava2:$ROOM_VERSION"
     kapt "android.arch.persistence.room:compiler:$ROOM_VERSION"
 
+    implementation 'com.jsoniter:jsoniter:0.9.22'
+
     testImplementation "android.arch.persistence.room:testing:$ROOM_VERSION"
 
     testImplementation 'junit:junit:4.12'

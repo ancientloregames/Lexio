@@ -9,9 +9,12 @@
 	<string name="search_word">Search word</string>
 	<string name="search_translation">Search translation</string>
 
+	<string name="enter_topic">Enter topic name</string>
+
 	<string name="word">Word</string>
 	<string name="translation">Translation</string>
 	<string name="transcription">Transcription</string>
+	<string name="topic">Topic</string>
 
 	<string name="submit">Submit</string>
 </resources>

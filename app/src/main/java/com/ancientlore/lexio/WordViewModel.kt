@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
 import android.text.Editable
+import java.util.*
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
@@ -18,7 +19,13 @@ class WordViewModel : ViewModel {
 
 	val transcription : ObservableField<String> = ObservableField("")
 
+	val topicField: ObservableField<String> = ObservableField("")
+
+	val topicsListField: ObservableField<String> = ObservableField("")
+
 	val editable : ObservableBoolean = ObservableBoolean(true)
+
+	private val topicsList = ArrayList<String>()
 
 	constructor() {
 		id = 0
@@ -29,6 +36,8 @@ class WordViewModel : ViewModel {
 		name.set(word.name)
 		translation.set(word.translation)
 		transcription.set(word.transcription)
+		topicsList.addAll(word.topics)
+		topicsListField.set(topicsList.joinToString())
 		editable.set(false)
 	}
 
@@ -69,7 +78,22 @@ class WordViewModel : ViewModel {
 		return !wasEditable
 	}
 
+	fun addTopic(text: String) {
+		val newTopic = text.toLowerCase()
+		if (isTopicNew(newTopic)) {
+			topicField.set("")
+			topicsList.add(newTopic)
+			topicsListField.set(topicsList.joinToString())
+		}
+	}
+
+	private fun isTopicNew(candidate: String) = candidate.isNotEmpty() && topicsList.none { it == candidate }
+
 	fun isEditable() = editable.get()
 
-	internal fun getWord() = Word(id, name.get().toString(), translation.get().toString(), transcription.get().toString())
+	internal fun getWord() = Word(id,
+			name.get().toString(),
+			translation.get().toString(),
+			transcription.get().toString(),
+			topicsList)
 }

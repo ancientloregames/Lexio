@@ -9,21 +9,24 @@ import android.os.Parcelable
 
 @Entity(tableName = "words", indices = [Index(value = "name", unique = true), Index(value = "translation", unique = false)])
 data class Word(@PrimaryKey(autoGenerate = true) var id: Long = 0,
-				@field:ColumnInfo(name = "name") var name: String = "",
-				@field:ColumnInfo(name = "translation") var translation: String = "",
-				@field:ColumnInfo(name = "transcription") var transcription: String = "") : Parcelable {
+				@field:ColumnInfo var name: String = "",
+				@field:ColumnInfo var translation: String = "",
+				@field:ColumnInfo var transcription: String = "",
+				@field:ColumnInfo var topics: ArrayList<String> = ArrayList()) : Parcelable {
 
 	private constructor(parcel: Parcel) : this(
 			id = parcel.readValue(Long::class.java.classLoader) as Long,
 			name = parcel.readString(),
 			translation = parcel.readString(),
-			transcription = parcel.readString())
+			transcription = parcel.readString(),
+			topics =  parcel.createStringArrayList())
 
 	override fun writeToParcel(dest: Parcel, flags: Int) {
 		dest.writeValue(id)
 		dest.writeString(name)
 		dest.writeString(translation)
 		dest.writeString(transcription)
+		dest.writeStringList(topics)
 	}
 
 	override fun describeContents() = 0
