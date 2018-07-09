@@ -1,28 +1,18 @@
 package com.ancientlore.lexio
 
+import android.content.Context
 import android.support.annotation.UiThread
-import android.support.v7.widget.RecyclerView
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Filter
-import android.widget.Filterable
 import android.widget.TextView
 
-class WordsListAdapter(items: MutableList<Word>) : RecyclerView.Adapter<WordsListAdapter.ViewHolder>(), Filterable {
+class WordsListAdapter(context: Context, items: MutableList<Word>):
+		BaseListAdapter<Word, WordsListAdapter.ViewHolder>(context, items) {
 
 	companion object {
 		const val SEARCH_WORD = 0
 		const val SEARCH_TRANSLATION = 1
 	}
-
-	interface Listener {
-		fun onWordSelected(word: Word)
-	}
-	var listener: Listener? = null
-
-	private val originalItems : MutableList<Word> = items
-	private var filteredItems : MutableList<Word> = items
 
 	private val wordFilter: WordFilter by lazy { WordFilter() }
 	private val translationFilter: TranslationFilter by lazy { TranslationFilter() }
@@ -45,25 +35,9 @@ class WordsListAdapter(items: MutableList<Word>) : RecyclerView.Adapter<WordsLis
 		}
 	}
 
-	override fun getItemCount(): Int {
-		return filteredItems.count()
-	}
+	override fun getViewHolder(layout: View) = ViewHolder(layout)
 
-	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-		return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.dictionary_list_item, parent, false))
-	}
-
-	override fun onBindViewHolder(holder: ViewHolder, index: Int) {
-		val word = filteredItems[index]
-		holder.bind(word)
-		holder.setClickListener(Runnable {
-			listener?.onWordSelected(word)
-		})
-	}
-
-	fun filter(constraint: String) {
-		filter.filter(constraint)
-	}
+	override fun getViewHolderLayoutRes(viewType: Int) = R.layout.dictionary_list_item
 
 	override fun getFilter() =
 		when (searchDirection) {
@@ -104,18 +78,14 @@ class WordsListAdapter(items: MutableList<Word>) : RecyclerView.Adapter<WordsLis
 		override fun satisfy(word: Word, candidate: String) = word.translation.toLowerCase().startsWith(candidate)
 	}
 
-	class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+	class ViewHolder(itemView: View) : BaseViewHolder<Word>(itemView) {
 
 		private val titleView: TextView = itemView.findViewById(R.id.title)
 		private val subtitleView: TextView = itemView.findViewById(R.id.subtitle)
 
-		fun bind(data: Word) {
+		override fun bind(data: Word) {
 			titleView.text = data.name
 			subtitleView.text = data.translation
-		}
-
-		fun setClickListener(action: Runnable) {
-			itemView.setOnClickListener { action.run() }
 		}
 	}
 }

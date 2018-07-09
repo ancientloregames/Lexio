@@ -17,7 +17,7 @@ import com.ancientlore.lexio.databinding.ActivityMainBinding
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), WordsListAdapter.Listener, SearchView.OnQueryTextListener {
+class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), BaseListAdapter.Listener<Word>, SearchView.OnQueryTextListener {
 	companion object {
 		const val INTENT_ADD_WORD = 101
 		const val INTENT_UPDATE_WORD = 102
@@ -29,6 +29,14 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), WordsLi
 
 	private lateinit var searchView: SearchView
 
+	private val wordAdapterListener = object: BaseListAdapter.Listener<Word> {
+		override fun onItemSelected(item: Word) {
+			val intent = Intent(this@MainActivity, WordActivity::class.java)
+			intent.putExtra(EXTRA_WORD, item)
+			startActivityForResult(intent, INTENT_UPDATE_WORD)
+		}
+	}
+
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 
@@ -39,8 +47,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), WordsLi
 		val db = WordsDatabase.getInstance(this)
 
 		dbExec.submit {
-			listAdapter = WordsListAdapter(db.wordDao().getAll().toMutableList())
-			listAdapter.listener = this
+			listAdapter = WordsListAdapter(this, db.wordDao().getAll().toMutableList())
+			listAdapter.listener = wordAdapterListener
 			listView.adapter = listAdapter
 		}
 	}
@@ -58,6 +66,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), WordsLi
 		when (item?.itemId) {
 			R.id.miOrigSearch -> listAdapter.searchDirection = SEARCH_WORD
 			R.id.miTransSearch -> listAdapter.searchDirection = SEARCH_TRANSLATION
+			//R.id.miSelectTopic ->
 		}
 		return true
 	}
@@ -118,9 +127,11 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), WordsLi
 		startActivityForResult(intent, INTENT_ADD_WORD)
 	}
 
-	override fun onWordSelected(word: Word) {
+	fun selectTopic() {
 		val intent = Intent(this, WordActivity::class.java)
-		intent.putExtra(EXTRA_WORD, word)
-		startActivityForResult(intent, INTENT_UPDATE_WORD)
+		startActivityForResult(intent, INTENT_ADD_WORD)
+	}
+
+	override fun onItemSelected(word: Word) {
 	}
 }
