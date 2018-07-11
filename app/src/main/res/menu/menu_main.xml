@@ -19,4 +19,8 @@
 		android:id="@+id/miTransSearch"
 		android:title="@string/search_translation"
 		/>
+	<item
+		android:id="@+id/miSelectTopic"
+		android:title="@string/select_topic"
+		/>
 </menu>

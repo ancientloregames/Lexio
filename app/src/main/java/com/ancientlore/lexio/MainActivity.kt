@@ -3,10 +3,10 @@ package com.ancientlore.lexio
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.support.annotation.WorkerThread
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -21,6 +21,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), BaseLis
 	companion object {
 		const val INTENT_ADD_WORD = 101
 		const val INTENT_UPDATE_WORD = 102
+		const val INTENT_SELECT_TOPIC = 103
 	}
 
 	private val dbExec: ExecutorService = Executors.newSingleThreadExecutor { r -> Thread(r, "db_worker") }
@@ -66,7 +67,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), BaseLis
 		when (item?.itemId) {
 			R.id.miOrigSearch -> listAdapter.searchDirection = SEARCH_WORD
 			R.id.miTransSearch -> listAdapter.searchDirection = SEARCH_TRANSLATION
-			//R.id.miSelectTopic ->
+			R.id.miSelectTopic -> selectTopic()
 		}
 		return true
 	}
@@ -97,6 +98,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), BaseLis
 					updateWord(it)
 					it.topics.forEach { topic -> addTopicToDb(topic) }
 				} }
+			INTENT_SELECT_TOPIC ->
+				data?.let { it.getStringExtra(TopicActivity.EXTRA_SELECTED_TOPIC)?.let { Log.i("sss", it) } }
 		}
 	}
 
@@ -118,17 +121,14 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), BaseLis
 		runOnUiThread { listAdapter.updateItem(word) }
 	}
 
-	@WorkerThread
 	private fun addWordToDb(word: Word) {
 		dbExec.submit { WordsDatabase.getInstance(this).wordDao().insert(word) }
 	}
 
-	@WorkerThread
 	private fun updateWordInDb(word: Word) {
 		dbExec.submit {  WordsDatabase.getInstance(this).wordDao().update(word) }
 	}
 
-	@WorkerThread
 	private fun addTopicToDb(topic: Topic) {
 		dbExec.submit { WordsDatabase.getInstance(this).topicDao().insert(topic) }
 	}
@@ -136,6 +136,11 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), BaseLis
 	fun onAddWord(view: View) {
 		val intent = Intent(this, WordActivity::class.java)
 		startActivityForResult(intent, INTENT_ADD_WORD)
+	}
+
+	fun selectTopic() {
+		val intent = Intent(this, TopicActivity::class.java)
+		startActivityForResult(intent, INTENT_SELECT_TOPIC)
 	}
 
 	override fun onItemSelected(word: Word) {

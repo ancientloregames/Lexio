@@ -21,6 +21,8 @@
 		</activity>
 		<activity android:name=".WordActivity"
 				  android:label="@string/new_word"/>
+		<activity android:name=".TopicActivity"
+				  android:label="@string/select_topic"/>
 	</application>
 
 </manifest>

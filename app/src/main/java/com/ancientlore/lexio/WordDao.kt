@@ -14,6 +14,9 @@ interface WordDao {
 	@Query("SELECT * FROM words WHERE name LIKE :first")
 	fun findByName(first: String): Word
 
+	@Query("SELECT * FROM words WHERE topics LIKE '%' || :topic || '%'")
+	fun findAllByTopic(topic: String): List<Word>
+
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
 	fun insert(vararg word: Word)
 
