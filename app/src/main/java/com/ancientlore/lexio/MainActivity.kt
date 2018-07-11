@@ -88,9 +88,15 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), BaseLis
 
 		when(requestCode) {
 			INTENT_ADD_WORD ->
-				data?.let { it.getParcelableExtra<Word>(WordActivity.EXTRA_WORD).let { addWord(it) } }
+				data?.let { it.getParcelableExtra<Word>(WordActivity.EXTRA_WORD).let {
+					addWord(it)
+					it.topics.forEach { topic -> addTopicToDb(topic) }
+				} }
 			INTENT_UPDATE_WORD ->
-				data?.let { it.getParcelableExtra<Word>(WordActivity.EXTRA_WORD)?.let { updateWord(it) } }
+				data?.let { it.getParcelableExtra<Word>(WordActivity.EXTRA_WORD)?.let {
+					updateWord(it)
+					it.topics.forEach { topic -> addTopicToDb(topic) }
+				} }
 		}
 	}
 
@@ -103,31 +109,31 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), BaseLis
 	override fun getTitleId() = R.string.my_words
 
 	private fun addWord(word: Word) {
-		dbExec.submit { addWordToDb(word) }
+		addWordToDb(word)
 		runOnUiThread { listAdapter.addItem(word) }
 	}
 
 	private fun updateWord(word: Word) {
-		dbExec.submit { updateWordInDb(word) }
+		updateWordInDb(word)
 		runOnUiThread { listAdapter.updateItem(word) }
 	}
 
 	@WorkerThread
 	private fun addWordToDb(word: Word) {
-		WordsDatabase.getInstance(this).wordDao().insert(word)
+		dbExec.submit { WordsDatabase.getInstance(this).wordDao().insert(word) }
 	}
 
 	@WorkerThread
 	private fun updateWordInDb(word: Word) {
-		WordsDatabase.getInstance(this).wordDao().update(word)
+		dbExec.submit {  WordsDatabase.getInstance(this).wordDao().update(word) }
+	}
+
+	@WorkerThread
+	private fun addTopicToDb(topic: Topic) {
+		dbExec.submit { WordsDatabase.getInstance(this).topicDao().insert(topic) }
 	}
 
 	fun onAddWord(view: View) {
-		val intent = Intent(this, WordActivity::class.java)
-		startActivityForResult(intent, INTENT_ADD_WORD)
-	}
-
-	fun selectTopic() {
 		val intent = Intent(this, WordActivity::class.java)
 		startActivityForResult(intent, INTENT_ADD_WORD)
 	}

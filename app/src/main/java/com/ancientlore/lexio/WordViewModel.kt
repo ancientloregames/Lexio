@@ -4,10 +4,10 @@ import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
 import android.text.Editable
-import java.util.*
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
+import kotlin.collections.ArrayList
 
 class WordViewModel : ViewModel {
 
@@ -36,7 +36,7 @@ class WordViewModel : ViewModel {
 		name.set(word.name)
 		translation.set(word.translation)
 		transcription.set(word.transcription)
-		topicsList.addAll(word.topics)
+		word.topics.forEach { topicsList.add(it.name) }
 		topicsListField.set(topicsList.joinToString())
 		editable.set(false)
 	}
@@ -91,9 +91,15 @@ class WordViewModel : ViewModel {
 
 	fun isEditable() = editable.get()
 
+	private fun getTopicsList(): ArrayList<Topic> {
+		val list = ArrayList<Topic>()
+		topicsList.forEach { list.add(Topic(it)) }
+		return list
+	}
+
 	internal fun getWord() = Word(id,
 			name.get().toString(),
 			translation.get().toString(),
 			transcription.get().toString(),
-			topicsList)
+			getTopicsList())
 }

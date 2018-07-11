@@ -11,4 +11,10 @@ class DataConverters {
 
 	@TypeConverter
 	fun serializeStrList(list: ArrayList<String>) = JsonStream.serialize(list)
+
+	@TypeConverter
+	fun deserializeTopicList(str: String) = JsonIterator.deserialize(str, object : TypeLiteral<ArrayList<Topic>>() {})
+
+	@TypeConverter
+	fun serializeTopicList(list: ArrayList<Topic>) = JsonStream.serialize(list)
 }
