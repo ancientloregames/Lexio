@@ -17,7 +17,7 @@ import com.ancientlore.lexio.databinding.ActivityMainBinding
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), BaseListAdapter.Listener<Word>, SearchView.OnQueryTextListener {
+class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), SearchView.OnQueryTextListener {
 	companion object {
 		const val INTENT_ADD_WORD = 101
 		const val INTENT_UPDATE_WORD = 102
@@ -141,8 +141,5 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), BaseLis
 	fun selectTopic() {
 		val intent = Intent(this, TopicActivity::class.java)
 		startActivityForResult(intent, INTENT_SELECT_TOPIC)
-	}
-
-	override fun onItemSelected(word: Word) {
 	}
 }
