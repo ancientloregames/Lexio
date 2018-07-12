@@ -15,7 +15,7 @@ abstract class BaseListAdapter<P, T: BaseViewHolder<P>>(context: Context, items:
 	}
 	var listener: Listener<P>? = null
 
-	protected val originalItems : MutableList<P> = items
+	protected var originalItems : MutableList<P> = items
 	protected var filteredItems : MutableList<P> = items
 
 	private val layoutInflater = LayoutInflater.from(context)

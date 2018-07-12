@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.SearchView
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -99,7 +98,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), SearchV
 					it.topics.forEach { topic -> addTopicToDb(topic) }
 				} }
 			INTENT_SELECT_TOPIC ->
-				data?.let { it.getStringExtra(TopicActivity.EXTRA_SELECTED_TOPIC)?.let { Log.i("sss", it) } }
+				data?.let { it.getParcelableExtra<Topic>(TopicActivity.EXTRA_SELECTED_TOPIC)
+						?.let { getTopicWordsFromDb(it) } }
 		}
 	}
 
@@ -131,6 +131,13 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), SearchV
 
 	private fun addTopicToDb(topic: Topic) {
 		dbExec.submit { WordsDatabase.getInstance(this).topicDao().insert(topic) }
+	}
+
+	private fun getTopicWordsFromDb(topic: Topic) {
+		dbExec.submit {
+			val topicWords = WordsDatabase.getInstance(this).wordDao().findAllByTopic(topic.name)
+			runOnUiThread { listAdapter.setItem(topicWords.toMutableList()) }
+		}
 	}
 
 	fun onAddWord(view: View) {

@@ -19,7 +19,7 @@ class TopicActivity: BaseActivity<ActivityTopicBinding, TopicActivityViewModel>(
 
 	private lateinit var listAdapter: TopicsListAdapter
 
-	private val wordAdapterListener = object: BaseListAdapter.Listener<Topic> {
+	private val topicAdapterListener = object: BaseListAdapter.Listener<Topic> {
 		override fun onItemSelected(item: Topic) {
 			onResult(item)
 		}
@@ -36,7 +36,7 @@ class TopicActivity: BaseActivity<ActivityTopicBinding, TopicActivityViewModel>(
 
 		dbExec.submit {
 			listAdapter = TopicsListAdapter(this, db.topicDao().getAll().toMutableList())
-			listAdapter.listener = wordAdapterListener
+			listAdapter.listener = topicAdapterListener
 			listView.adapter = listAdapter
 		}
 	}
@@ -51,7 +51,7 @@ class TopicActivity: BaseActivity<ActivityTopicBinding, TopicActivityViewModel>(
 
 	private fun onResult(topic: Topic) {
 		val intent = Intent()
-		intent.putExtra(EXTRA_SELECTED_TOPIC, topic.name)
+		intent.putExtra(EXTRA_SELECTED_TOPIC, topic)
 		setResult(Activity.RESULT_OK, intent)
 		finish()
 	}
