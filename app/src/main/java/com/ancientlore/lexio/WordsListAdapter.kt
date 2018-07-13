@@ -19,11 +19,14 @@ class WordsListAdapter(context: Context, items: MutableList<Word>):
 
 	var searchDirection: Int = SEARCH_WORD
 
+	var currentTopic = ""
+
 	@UiThread
-	fun setItem(newItems: MutableList<Word>) {
+	fun setItem(newItems: MutableList<Word>, topic: String) {
 		filter.filter("")
 		originalItems = newItems
 		filteredItems = newItems
+		currentTopic = topic
 		notifyDataSetChanged()
 	}
 

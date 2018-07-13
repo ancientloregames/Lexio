@@ -113,7 +113,8 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), SearchV
 
 	private fun addWord(word: Word) {
 		addWordToDb(word)
-		runOnUiThread { listAdapter.addItem(word) }
+		if (word.hasTopic(listAdapter.currentTopic))
+			runOnUiThread { listAdapter.addItem(word) }
 	}
 
 	private fun updateWord(word: Word) {
@@ -136,7 +137,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), SearchV
 	private fun getTopicWordsFromDb(topic: Topic) {
 		dbExec.submit {
 			val topicWords = WordsDatabase.getInstance(this).wordDao().findAllByTopic(topic.name)
-			runOnUiThread { listAdapter.setItem(topicWords.toMutableList()) }
+			runOnUiThread { listAdapter.setItem(topicWords.toMutableList(), topic.name) }
 		}
 	}
 

@@ -31,6 +31,8 @@ data class Word(@PrimaryKey(autoGenerate = true) var id: Long = 0,
 
 	override fun describeContents() = 0
 
+	fun hasTopic(topic: String) = topics.any { it.name == topic }
+
 	companion object {
 		@JvmField
 		val CREATOR = object : Parcelable.Creator<Word> {
