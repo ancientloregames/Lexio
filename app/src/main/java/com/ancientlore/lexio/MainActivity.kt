@@ -67,6 +67,7 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), SearchV
 			R.id.miOrigSearch -> listAdapter.searchDirection = SEARCH_WORD
 			R.id.miTransSearch -> listAdapter.searchDirection = SEARCH_TRANSLATION
 			R.id.miSelectTopic -> selectTopic()
+			R.id.miSetting -> openSettings()
 		}
 		return true
 	}
@@ -146,8 +147,13 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), SearchV
 		startActivityForResult(intent, INTENT_ADD_WORD)
 	}
 
-	fun selectTopic() {
+	private fun selectTopic() {
 		val intent = Intent(this, TopicActivity::class.java)
 		startActivityForResult(intent, INTENT_SELECT_TOPIC)
+	}
+
+	private fun openSettings() {
+		val intent = Intent(this, SettingsActivity::class.java)
+		startActivity(intent)
 	}
 }

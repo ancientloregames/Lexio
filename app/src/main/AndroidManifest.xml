@@ -23,6 +23,8 @@
 				  android:label="@string/new_word"/>
 		<activity android:name=".TopicActivity"
 				  android:label="@string/select_topic"/>
+		<activity android:name=".SettingsActivity"
+				  android:label="@string/title_activity_settings"/>
 	</application>
 
 </manifest>

@@ -23,4 +23,8 @@
 		android:id="@+id/miSelectTopic"
 		android:title="@string/select_topic"
 		/>
+	<item
+		android:id="@+id/miSetting"
+		android:title="@string/title_activity_settings"
+		/>
 </menu>
