@@ -36,7 +36,7 @@ class SettingsActivity: AppCompatActivity() {
 			super.onCreate(savedInstanceState)
 			addPreferencesFromResource(R.xml.prefs)
 
-			val prefs = activity.getPreferences(Context.MODE_PRIVATE)
+			val prefs = activity.getSharedPreferences(Consts.PREFS_NAME, Context.MODE_PRIVATE)
 
 			val autoTranslationSwitch = preferenceManager.findPreference("autotranslation") as SwitchPreference
 			autoTranslationSwitch.isChecked = prefs.getBoolean(Consts.PREF_AUTO_TRANSLATE, true)

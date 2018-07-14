@@ -1,6 +1,7 @@
 package com.ancientlore.lexio
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.view.Menu
 import android.view.MenuItem
@@ -28,7 +29,13 @@ class WordActivity : BaseActivity<ActivityWordBinding, WordViewModel>() {
 
 	override fun getBindingVariable() = BR.wordModel
 
-	override fun createViewModel() = intent.getParcelableExtra<Word>(EXTRA_WORD)?.let { WordViewModel(it) } ?: WordViewModel()
+	override fun createViewModel(): WordViewModel {
+		val useAutoTranslation = getSharedPreferences(Consts.PREFS_NAME, Context.MODE_PRIVATE)
+				.getBoolean(Consts.PREF_AUTO_TRANSLATE, true)
+		return intent.getParcelableExtra<Word>(EXTRA_WORD)
+				?.let { WordViewModel(it, useAutoTranslation) }
+				?: WordViewModel(useAutoTranslation)
+	}
 
 	override fun getTitleId() = R.string.new_word
 

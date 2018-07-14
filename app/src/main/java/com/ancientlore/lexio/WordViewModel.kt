@@ -7,31 +7,33 @@ import android.text.Editable
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
-import kotlin.collections.ArrayList
 
 class WordViewModel : ViewModel {
 
 	val id: Long
 
-	val name : ObservableField<String> = ObservableField("")
+	val name: ObservableField<String> = ObservableField("")
 
-	val translation : ObservableField<String> = ObservableField("")
+	val translation: ObservableField<String> = ObservableField("")
 
-	val transcription : ObservableField<String> = ObservableField("")
+	val transcription: ObservableField<String> = ObservableField("")
 
 	val topicField: ObservableField<String> = ObservableField("")
 
 	val topicsListField: ObservableField<String> = ObservableField("")
 
-	val editable : ObservableBoolean = ObservableBoolean(true)
+	val editable: ObservableBoolean = ObservableBoolean(true)
+
+	private var withAutoTranslation = true
 
 	private val topicsList = ArrayList<String>()
 
-	constructor() {
+	constructor(withAutoTranslation: Boolean) {
 		id = 0
+		this.withAutoTranslation = withAutoTranslation
 	}
 
-	constructor(word: Word) {
+	constructor(word: Word, withAutoTranslation: Boolean) {
 		id = word.id
 		name.set(word.name)
 		translation.set(word.translation)
@@ -39,6 +41,7 @@ class WordViewModel : ViewModel {
 		word.topics.forEach { topicsList.add(it.name) }
 		topicsListField.set(topicsList.joinToString())
 		editable.set(false)
+		this.withAutoTranslation = withAutoTranslation
 	}
 
 	val typeWordWatcher = object : SimpleTextWatcher() {
@@ -47,11 +50,13 @@ class WordViewModel : ViewModel {
 		private var execTask: ScheduledFuture<*>? = null
 
 		override fun afterTextChanged(s: Editable) {
-			execTask?.cancel(true)
-			if (s.length > 2) {
-				execTask = execService.schedule( {
-					Utils.getTranslation(s.toString(), setTranslation, printError)
-				}, 200, TimeUnit.MILLISECONDS)
+			if (withAutoTranslation) {
+				execTask?.cancel(true)
+				if (s.length > 2) {
+					execTask = execService.schedule({
+						Utils.getTranslation(s.toString(), setTranslation, printError)
+					}, 200, TimeUnit.MILLISECONDS)
+				}
 			}
 		}
 
