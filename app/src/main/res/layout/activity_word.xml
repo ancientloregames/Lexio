@@ -148,13 +148,40 @@
 			android:layout_marginRight="8dp"
 			android:layout_marginTop="8dp"
 			app:layout_constraintTop_toBottomOf="@+id/et_topic"
-			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintBottom_toTopOf="@+id/noteWrapper"
 			tools:text="TextView"
 			android:textSize="16sp"
 			android:text="@={wordModel.topicsListField}"
 			android:visibility="@{wordModel.topicsListField.isEmpty() ? View.GONE : View.VISIBLE}"
 			tools:visibility="gone"
 			/>
+
+		<android.support.design.widget.TextInputLayout
+			android:id="@+id/noteWrapper"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_marginEnd="8dp"
+			android:layout_marginRight="8dp"
+			android:layout_marginLeft="8dp"
+			android:layout_marginStart="8dp"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toBottomOf="@+id/tv_topics_list"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintHorizontal_bias="0.5"
+			android:layout_marginTop="8dp"
+			>
+			<android.support.v7.widget.AppCompatEditText
+				android:id="@+id/note"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:singleLine="true"
+				android:maxLines="1"
+				android:hint="@string/note"
+				android:text="@={wordModel.note}"
+				android:inputType="@{wordModel.editable ? InputType.TYPE_CLASS_TEXT : InputType.TYPE_NULL}"
+				/>
+		</android.support.design.widget.TextInputLayout>
 
 		<android.support.design.widget.FloatingActionButton
 			android:id="@+id/submitButton"

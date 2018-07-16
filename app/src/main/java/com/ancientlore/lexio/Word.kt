@@ -12,14 +12,16 @@ data class Word(@PrimaryKey(autoGenerate = true) var id: Long = 0,
 				@field:ColumnInfo var name: String = "",
 				@field:ColumnInfo var translation: String = "",
 				@field:ColumnInfo var transcription: String = "",
-				@field:ColumnInfo var topics: ArrayList<Topic> = ArrayList()) : Parcelable {
+				@field:ColumnInfo var topics: ArrayList<Topic> = ArrayList(),
+				@field:ColumnInfo var note: String = "") : Parcelable {
 
 	private constructor(parcel: Parcel) : this(
 			id = parcel.readValue(Long::class.java.classLoader) as Long,
 			name = parcel.readString(),
 			translation = parcel.readString(),
 			transcription = parcel.readString(),
-			topics =  parcel.createTypedArrayList(Topic.CREATOR))
+			topics =  parcel.createTypedArrayList(Topic.CREATOR),
+			note = parcel.readString())
 
 	override fun writeToParcel(dest: Parcel, flags: Int) {
 		dest.writeValue(id)
@@ -27,6 +29,7 @@ data class Word(@PrimaryKey(autoGenerate = true) var id: Long = 0,
 		dest.writeString(translation)
 		dest.writeString(transcription)
 		dest.writeTypedList(topics)
+		dest.writeString(note)
 	}
 
 	override fun describeContents() = 0

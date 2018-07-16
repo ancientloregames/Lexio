@@ -18,6 +18,8 @@ class WordViewModel : ViewModel {
 
 	val transcription: ObservableField<String> = ObservableField("")
 
+	val note: ObservableField<String> = ObservableField("")
+
 	val topicField: ObservableField<String> = ObservableField("")
 
 	val topicsListField: ObservableField<String> = ObservableField("")
@@ -38,6 +40,7 @@ class WordViewModel : ViewModel {
 		name.set(word.name)
 		translation.set(word.translation)
 		transcription.set(word.transcription)
+		note.set(word.note)
 		word.topics.forEach { topicsList.add(it.name) }
 		topicsListField.set(topicsList.joinToString())
 		editable.set(false)

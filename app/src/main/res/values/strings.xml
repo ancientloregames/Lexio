@@ -16,6 +16,7 @@
 	<string name="translation">Translation</string>
 	<string name="transcription">Transcription</string>
 	<string name="topic">Topic</string>
+	<string name="note">Note</string>
 
 	<string name="submit">Submit</string>
 	<string name="title_activity_settings">Settings</string>
