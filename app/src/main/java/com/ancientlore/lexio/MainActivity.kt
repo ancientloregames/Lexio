@@ -114,9 +114,11 @@ class MainActivity : BaseActivity<ActivityMainBinding, MainViewModel>(), SearchV
 
 	private fun addWord(word: Word) {
 		addWordToDb(word)
-		if (word.hasTopic(listAdapter.currentTopic))
+		if (isInCurrentTopic(word))
 			runOnUiThread { listAdapter.addItem(word) }
 	}
+
+	private fun isInCurrentTopic(word: Word) = listAdapter.currentTopic.isEmpty() || word.hasTopic(listAdapter.currentTopic)
 
 	private fun updateWord(word: Word) {
 		updateWordInDb(word)
