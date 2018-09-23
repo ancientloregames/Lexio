@@ -1,8 +1,8 @@
 package com.ancientlore.lexio
 
 object Consts {
-	const val LANG_EN = "en"
-	const val LANG_RU = "ru"
+	const val LANG_FROM = "de"
+	const val LANG_TO = "en"
 
 	const val PREFS_NAME = "prefs"
 

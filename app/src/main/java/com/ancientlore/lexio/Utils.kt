@@ -12,7 +12,7 @@ object Utils {
 	private val okHttpClient: OkHttpClient by lazy { OkHttpClient() }
 
 	fun getTranslation(text: String, onSuccess: Runnable1<String>, onFailure: Runnable1<Throwable>?) {
-		val url = getTranslateUrl(text, Consts.LANG_EN, Consts.LANG_RU)
+		val url = getTranslateUrl(text, Consts.LANG_TO, Consts.LANG_FROM)
 		val request = okhttp3.Request.Builder().url(url).build()
 
 		okHttpClient.newCall(request).enqueue(object : Callback {
